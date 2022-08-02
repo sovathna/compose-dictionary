@@ -1,0 +1,19 @@
+insertBookmark:
+INSERT INTO bookmarks(word_id,word)
+VALUES(:word_id,:word);
+
+deleteBookmark:
+DELETE FROM bookmarks WHERE word_id = :word_id;
+
+selectBookmarks:
+SELECT word_id, word
+FROM bookmarks
+WHERE word LIKE :filter
+ORDER BY id DESC
+LIMIT :limit
+OFFSET :offset;
+
+selectBookmark:
+SELECT id
+FROM bookmarks
+WHERE word_id = :word_id;
