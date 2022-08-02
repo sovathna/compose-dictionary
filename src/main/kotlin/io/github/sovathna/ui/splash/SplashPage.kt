@@ -60,10 +60,8 @@ fun SplashPage(
                 content = {
                     Image(
                         modifier = Modifier
-                            .align(Alignment.Center)
-                            .fillMaxHeight(.5f)
-                            .aspectRatio(1f),
-                        painter = painterResource("splash.png"),
+                            .align(Alignment.Center),
+                        painter = painterResource("ic_launcher_192.png"),
                         contentDescription = null
                     )
                 })
@@ -78,11 +76,13 @@ fun SplashPage(
                 textAlign = TextAlign.Center
             )
             Spacer(Modifier.height(32.dp))
-            val progressModifier = Modifier
-                .fillMaxWidth(.5f)
-                .align(Alignment.CenterHorizontally)
-            if (0f < state.progress && state.progress < 1f) {
-                LinearProgressIndicator(modifier = progressModifier, progress = state.progress)
+            LinearProgressIndicator(
+                modifier = Modifier
+                    .fillMaxWidth(.5f)
+                    .align(Alignment.CenterHorizontally),
+                progress = state.progress
+            )
+            if (state.progress < 1f) {
                 Spacer(Modifier.height(8.dp))
                 AppText(
                     modifier = Modifier.fillMaxWidth(.5f).align(Alignment.CenterHorizontally),
@@ -90,8 +90,6 @@ fun SplashPage(
                     fontSize = 14.sp,
                     textAlign = TextAlign.End
                 )
-            } else {
-                LinearProgressIndicator(modifier = progressModifier)
             }
         })
 

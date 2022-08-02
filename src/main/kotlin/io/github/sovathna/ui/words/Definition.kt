@@ -96,17 +96,10 @@ fun Definition(
                                 }
                             }
                         )
-//                        Text(
-//                            modifier = Modifier.fillMaxWidth().verticalScroll(ScrollState(0)),
-//                            text = state.definition,
-//                            fontSize = state.fontSize.sp,
-//                            letterSpacing = 0.sp
-//                        )
                     }
                 } else {
                     AppText(
                         text = "ចុចលើពាក្យដើម្បីមើលការពន្យល់",
-                        fontSize = state.fontSize.sp,
                         modifier = Modifier.align(Alignment.Center).fillMaxWidth(),
                         textAlign = TextAlign.Center
                     )

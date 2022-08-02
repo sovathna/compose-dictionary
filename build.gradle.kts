@@ -51,6 +51,8 @@ compose.desktop {
             packageVersion = "1.0.0"
             description = "Khmer Dictionary"
             copyright = "© 2022 Sovathna Hong. All rights reserved."
+            licenseFile.set(project.file("LICENSE"))
+            vendor = "Sovathna Hong"
             modules("java.instrument", "java.sql", "jdk.unsupported")
             windows {
                 packageName = "Khmer Dictionary"

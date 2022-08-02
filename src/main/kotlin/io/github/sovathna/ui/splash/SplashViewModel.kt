@@ -12,7 +12,6 @@ import java.io.File
 import java.io.FileOutputStream
 import java.io.InputStream
 import java.util.zip.ZipInputStream
-import kotlin.math.ceil
 
 class SplashViewModel(private val scope: CoroutineScope) : BaseViewModel<SplashState>(SplashState()), KoinComponent {
 
@@ -33,7 +32,7 @@ class SplashViewModel(private val scope: CoroutineScope) : BaseViewModel<SplashS
         var zipInputStream: ZipInputStream? = null
         try {
             if (repo.shouldDownloadData(Const.config.dataVersion)) {
-                delay(1000)
+                delay(250)
                 if (file.exists()) file.delete()
                 dbOutputStream = FileOutputStream(file)
 
@@ -60,9 +59,9 @@ class SplashViewModel(private val scope: CoroutineScope) : BaseViewModel<SplashS
                 }
 
                 repo.setDataVersion(1)
-                setProgress(1f)
             }
-            delay(1000)
+            setProgress(1f)
+            delay(250)
             scope.launch {
                 setState(current.copy(shouldRedirect = true))
             }
