@@ -46,7 +46,7 @@ compose.desktop {
         javaHome = System.getenv("JDK_18")
         mainClass = "io.github.sovathna.MainKt"
         nativeDistributions {
-            targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
+            targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Rpm)
             packageName = "io.github.sovathna.KhmerDictionary"
             packageVersion = "1.0.0"
             description = "Khmer Dictionary"
@@ -54,8 +54,14 @@ compose.desktop {
             licenseFile.set(project.file("LICENSE"))
             vendor = "Sovathna Hong"
             modules("java.instrument", "java.sql", "jdk.unsupported")
+
             windows {
                 packageName = "Khmer Dictionary"
+            }
+
+            linux{
+                packageName = "khmer-dictionary"
+                appRelease = "1"
             }
         }
     }
@@ -63,7 +69,6 @@ compose.desktop {
 
 sqldelight {
     database("Database") {
-        dialect = "sqlite:3.25"
         packageName = "io.github.sovathna.domain.local"
     }
 }

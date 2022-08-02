@@ -39,7 +39,15 @@ val appModule = module {
     }
 
     single(qualifier = named("local_data_dir")) {
-        File(System.getenv("LOCALAPPDATA"), "Khmer Dictionary")
+        if (System.getProperty("os.name").contains("win", true)) {
+            File(System.getenv("LOCALAPPDATA"), "Khmer Dictionary")
+        } else {
+            try {
+                File(System.getProperty("compose.application.resources.dir"))
+            } catch (e: Exception) {
+                File(System.getProperty("user.dir"))
+            }
+        }
     }
 
     single(qualifier = named("database_file")) {

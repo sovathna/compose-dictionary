@@ -1,5 +1,3 @@
-# compose-dictionary
-
 # វចនានុក្រមខ្មែរ (វចនានុក្រមសម្ដេចសង្ឃ ជួន ណាត)
 
 This project is to showcase and to get my hand-on with Compose Desktop, by JetBrains.
