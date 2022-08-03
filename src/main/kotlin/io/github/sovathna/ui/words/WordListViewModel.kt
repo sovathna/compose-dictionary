@@ -1,7 +1,7 @@
 package io.github.sovathna.ui.words
 
 import io.github.sovathna.Const
-import io.github.sovathna.data.AppRepository
+import io.github.sovathna.domain.Repository
 import io.github.sovathna.model.WordUi
 import io.github.sovathna.model.WordsType
 import kotlinx.coroutines.CoroutineScope
@@ -22,7 +22,7 @@ class WordListViewModel(private val scope: CoroutineScope) : KoinComponent {
         this.state.value = state
     }
 
-    private val repo by inject<AppRepository>()
+    private val repo by inject<Repository>()
 
     private val filterFlow = MutableSharedFlow<String>(extraBufferCapacity = 1)
 

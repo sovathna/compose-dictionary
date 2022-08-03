@@ -1,8 +1,8 @@
 package io.github.sovathna.ui.splash
 
 import io.github.sovathna.Const
-import io.github.sovathna.data.AppRepository
-import io.github.sovathna.data.FileDownloadService
+import io.github.sovathna.domain.FileDownloadService
+import io.github.sovathna.domain.Repository
 import io.github.sovathna.ui.BaseViewModel
 import kotlinx.coroutines.*
 import org.koin.core.component.KoinComponent
@@ -17,7 +17,7 @@ class SplashViewModel(private val scope: CoroutineScope) : BaseViewModel<SplashS
 
 
     private val file by inject<File>(qualifier = named("database_file"))
-    private val repo by inject<AppRepository>()
+    private val repo by inject<Repository>()
     private val downloadService by inject<FileDownloadService>()
 
     private fun setProgress(progress: Float) {
@@ -52,7 +52,6 @@ class SplashViewModel(private val scope: CoroutineScope) : BaseViewModel<SplashS
                     val current = System.currentTimeMillis()
                     if (last + 500 <= current) {
                         val progress = totalRead / size
-                        println("$progress")
                         setProgress(progress)
                         last = current
                     }

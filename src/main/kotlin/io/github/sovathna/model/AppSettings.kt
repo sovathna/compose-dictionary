@@ -1,4 +1,4 @@
-package io.github.sovathna.data.settings
+package io.github.sovathna.model
 
 import com.google.gson.annotations.SerializedName
 import io.github.sovathna.model.ThemeType

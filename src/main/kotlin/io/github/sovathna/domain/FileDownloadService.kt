@@ -1,4 +1,4 @@
-package io.github.sovathna.data
+package io.github.sovathna.domain
 
 import okhttp3.ResponseBody
 import retrofit2.http.GET

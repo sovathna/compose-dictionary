@@ -1,6 +1,8 @@
 package io.github.sovathna.data.settings
 
 import com.google.gson.Gson
+import io.github.sovathna.domain.SettingsStore
+import io.github.sovathna.model.AppSettings
 import io.github.sovathna.model.ThemeType
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -12,42 +14,34 @@ import java.io.FileInputStream
 import java.io.FileOutputStream
 import java.io.InputStream
 
-class AppSettingsStore : KoinComponent {
+class SettingsStoreImpl : SettingsStore, KoinComponent {
     private val gson by inject<Gson>()
-    private val dataDir by inject<File>(qualifier = named("local_data_dir"))
-    private val file = File(dataDir, "settings.config")
+    private val file by inject<File>(qualifier = named("settings_file"))
 
-    private suspend fun ensureCreateDir() = withContext(Dispatchers.IO) {
-        if (!dataDir.exists()) {
-            dataDir.mkdirs()
-        }
-    }
+    override suspend fun getDataVersion() = getSettings().dataVersion
 
-    suspend fun getDataVersion() = getSettings().dataVersion
-
-    suspend fun setDataVersion(version: Int) {
+    override suspend fun setDataVersion(version: Int) {
         val settings = getSettings().copy(dataVersion = version)
         setSettings(settings)
     }
 
-    suspend fun setThemeType(themeType: ThemeType) {
+    override suspend fun setThemeType(themeType: ThemeType) {
         val settings = getSettings().copy(themeType = themeType)
         setSettings(settings)
     }
 
-    suspend fun getThemeType(): ThemeType = getSettings().themeType
+    override suspend fun getThemeType(): ThemeType = getSettings().themeType
 
-    suspend fun setDefinitionFontSize(size: Float) {
+    override suspend fun setDefinitionFontSize(size: Float) {
         val settings = getSettings().copy(definitionFontSize = size)
         setSettings(settings)
     }
 
-    suspend fun getDefinitionFontSize(): Float = getSettings().definitionFontSize
+    override suspend fun getDefinitionFontSize(): Float = getSettings().definitionFontSize
 
     private suspend fun getSettings(): AppSettings = withContext(Dispatchers.IO) {
         var inputStream: InputStream? = null
         try {
-            ensureCreateDir()
             inputStream = FileInputStream(file)
             val json = String(inputStream.readBytes())
             inputStream.close()

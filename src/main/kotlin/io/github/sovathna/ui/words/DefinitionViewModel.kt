@@ -1,6 +1,6 @@
 package io.github.sovathna.ui.words
 
-import io.github.sovathna.data.AppRepository
+import io.github.sovathna.domain.Repository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -17,7 +17,7 @@ class DefinitionViewModel(private val scope: CoroutineScope) : KoinComponent {
         states.value = state
     }
 
-    private val repo by inject<AppRepository>()
+    private val repo by inject<Repository>()
 
     fun getDefinition(wordId: Long) {
         if (wordId <= 0) return

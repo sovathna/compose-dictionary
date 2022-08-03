@@ -1,6 +1,6 @@
 package io.github.sovathna.app
 
-import io.github.sovathna.data.AppRepository
+import io.github.sovathna.domain.Repository
 import io.github.sovathna.model.ThemeType
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -19,7 +19,7 @@ class AppViewModel(private val scope: CoroutineScope) : KoinComponent {
         states.value = state
     }
 
-    private val repo by inject<AppRepository>()
+    private val repo by inject<Repository>()
 
     init {
         getThemeType()

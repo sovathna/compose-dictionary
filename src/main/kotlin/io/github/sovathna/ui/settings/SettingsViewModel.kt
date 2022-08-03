@@ -1,6 +1,6 @@
 package io.github.sovathna.ui.settings
 
-import io.github.sovathna.data.AppRepository
+import io.github.sovathna.domain.Repository
 import io.github.sovathna.model.ThemeType
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -18,7 +18,7 @@ class SettingsViewModel(private val scope: CoroutineScope) : KoinComponent {
         states.value = state
     }
 
-    private val repo by inject<AppRepository>()
+    private val repo by inject<Repository>()
 
     init {
         scope.launch {

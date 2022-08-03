@@ -11,13 +11,20 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
 import io.github.sovathna.app.App
+import io.github.sovathna.data.local.databaseModule
+import io.github.sovathna.data.remote.fileDownloadServiceModule
 import org.koin.core.context.startKoin
 import org.koin.core.logger.Level
 
 fun main() {
     startKoin {
         printLogger(Level.DEBUG)
-        modules(appModule)
+        modules(
+            appModule,
+            appDataFileModule,
+            databaseModule,
+            fileDownloadServiceModule
+        )
     }
 
     application {
