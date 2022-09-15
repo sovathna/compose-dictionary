@@ -52,8 +52,6 @@ class SettingsStoreImpl : SettingsStore, KoinComponent {
         } finally {
             inputStream?.close()
         }
-
-
     }
 
     private suspend fun setSettings(settings: AppSettings) = withContext(Dispatchers.IO) {

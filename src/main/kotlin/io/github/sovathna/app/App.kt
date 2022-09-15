@@ -9,13 +9,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import io.github.sovathna.NavItemData
 import io.github.sovathna.model.ThemeType
+import io.github.sovathna.model.WordsType
 import io.github.sovathna.ui.about.AboutPage
 import io.github.sovathna.ui.nav.NavView
 import io.github.sovathna.ui.settings.SettingsPage
 import io.github.sovathna.ui.splash.SplashPage
 import io.github.sovathna.ui.theme.AppTheme
 import io.github.sovathna.ui.words.WordsPage
-import io.github.sovathna.model.WordsType
 import kotlinx.coroutines.CoroutineScope
 
 @Composable

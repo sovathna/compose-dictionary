@@ -59,7 +59,7 @@ compose.desktop {
                 packageName = "Khmer Dictionary"
             }
 
-            linux{
+            linux {
                 packageName = "khmer-dictionary"
                 appRelease = "1"
             }
@@ -68,8 +68,23 @@ compose.desktop {
 }
 
 sqldelight {
-    database("Database") {
-        packageName = "io.github.sovathna.domain.local"
+    database("WordsDatabase") {
+        packageName = "io.github.sovathna.domain.wordsdb"
+        sourceFolders = listOf("wordsdb")
+        dialect = "sqlite:3.25"
+        //verifyMigrations = true
+    }
+
+    database("LocalDatabase") {
+        packageName = "io.github.sovathna.domain.localdb"
+
+        // An array of folders where the plugin will read your '.sq' and '.sqm'
+        // files. The folders are relative to the existing source set so if you
+        // specify ["db"], the plugin will look into 'src/main/db' or 'src/commonMain/db' for KMM.
+        // Defaults to ["sqldelight"]
+        sourceFolders = listOf("localdb")
+        dialect = "sqlite:3.25"
+        //verifyMigrations = true
     }
 }
 

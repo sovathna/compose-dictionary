@@ -1,7 +1,6 @@
 package io.github.sovathna.model
 
 import com.google.gson.annotations.SerializedName
-import io.github.sovathna.model.ThemeType
 
 data class AppSettings(
     @SerializedName("theme_type")

@@ -1,4 +1,5 @@
 package io.github.sovathna.ui.theme
+
 import androidx.compose.ui.graphics.Color
 
 val md_theme_light_surfaceTint = Color(0xFF6750A4)

@@ -45,12 +45,14 @@ fun AboutPage() {
                     )
                     TextButton(
                         modifier = Modifier.align(Alignment.CenterHorizontally).padding(top = 32.dp),
-                        onClick = {Desktop.getDesktop().browse(URI("https://sovathna.github.io/"))},
+                        onClick = { Desktop.getDesktop().browse(URI("https://sovathna.github.io/")) },
                         content = { Text(text = "អភិវឌ្ឍកម្មវិធីដោយ ហុង សុវឌ្ឍនា", letterSpacing = 0.sp) }
                     )
                     TextButton(
                         modifier = Modifier.align(Alignment.CenterHorizontally),
-                        onClick = {Desktop.getDesktop().browse(URI("https://github.com/sovathna/compose-dictionary"))},
+                        onClick = {
+                            Desktop.getDesktop().browse(URI("https://github.com/sovathna/compose-dictionary"))
+                        },
                         content = { Text(text = "កូដរបស់កម្មវិធីនេះមាននៅលើGitHub", letterSpacing = 0.sp) }
                     )
                 }

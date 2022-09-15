@@ -1,6 +1,6 @@
 package io.github.sovathna.domain
 
-import io.github.sovathna.data.dao.SelectDefinition
+import io.github.sovathna.data.wordsdb.dao.SelectDefinition
 import io.github.sovathna.model.ThemeType
 import io.github.sovathna.model.WordUi
 import io.github.sovathna.model.WordsType
