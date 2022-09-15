@@ -1,0 +1,21 @@
+insertHistory:
+INSERT INTO histories(word_id,word)
+VALUES(:word_id,:word);
+
+selectHistory:
+SELECT id
+FROM histories
+WHERE word_id = :word_id;
+
+deleteHistory:
+DELETE
+FROM histories
+WHERE id = :id;
+
+selectHistories:
+SELECT word_id, word
+FROM histories
+WHERE word LIKE :filter
+ORDER BY id DESC
+LIMIT :limit
+OFFSET :offset;

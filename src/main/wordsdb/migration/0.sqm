@@ -1,0 +1,5 @@
+CREATE TABLE IF NOT EXISTS words (
+    id INTEGER NOT NULL PRIMARY KEY,
+    word TEXT NOT NULL,
+    definition TEXT NOT NULL
+);

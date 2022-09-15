@@ -1,0 +1,12 @@
+selectWords:
+SELECT id, word
+FROM words
+WHERE word LIKE :filter
+ORDER BY word
+LIMIT :limit
+OFFSET :offset;
+
+selectDefinition:
+SELECT word,definition
+FROM words
+WHERE id = :id;
