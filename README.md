@@ -2,7 +2,7 @@
 
 Digital Khmer Dictionary (Samdech Sangha Rāja Jhotañāno Chuon Nath)
 
-A Compose Desktop app written using Compose Kotlin UI Framework by JetBrains. I have written this app out of curiosity
+A Compose Desktop app written using Compose, a Kotlin UI Framework by JetBrains. I have written this app out of curiosity
 to learn new things and to understand about Compose.
 
 This app is also available in other programming languages/frameworks and platforms. Check them out below.
