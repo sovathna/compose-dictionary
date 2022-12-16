@@ -10,7 +10,7 @@ pluginManagement {
     plugins {
         kotlin("jvm").version(extra["kotlin.version"] as String)
         id("org.jetbrains.compose").version(extra["compose.version"] as String)
-        id("com.squareup.sqldelight").version("1.5.3")
+        id("com.squareup.sqldelight").version("1.5.4")
     }
 }
 

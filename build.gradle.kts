@@ -26,11 +26,11 @@ tasks.withType<KotlinCompile>().configureEach {
 
 dependencies {
     implementation(compose.desktop.currentOs)
-    implementation("com.google.code.gson:gson:2.9.0")
+    implementation("com.google.code.gson:gson:2.10")
 //                implementation("androidx.paging:paging-compose:1.0.0-alpha15")
-    implementation("com.squareup.sqldelight:sqlite-driver:1.5.3")
+    implementation("com.squareup.sqldelight:sqlite-driver:1.5.4")
 //                implementation ("com.squareup.sqldelight:coroutines-extensions-jvm:1.5.3")
-    implementation("io.insert-koin:koin-core:3.2.0")
+    implementation("io.insert-koin:koin-core:3.2.2")
 
 //    implementation ("com.squareup.retrofit2:retrofit:2.9.0")
 //    implementation("com.squareup.okhttp3:logging-interceptor:4.10.0")
@@ -43,10 +43,15 @@ dependencies {
 
 compose.desktop {
     application {
+
+        buildTypes.release.proguard {
+            configurationFiles.from(project.file("proguard-rules.pro"))
+        }
+
         javaHome = System.getenv("JDK_18")
         mainClass = "io.github.sovathna.MainKt"
         nativeDistributions {
-            targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Rpm)
+            targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Rpm, TargetFormat.Deb)
             packageName = "io.github.sovathna.KhmerDictionary"
             packageVersion = "1.0.0"
             description = "Khmer Dictionary"
@@ -57,6 +62,8 @@ compose.desktop {
 
             windows {
                 packageName = "Khmer Dictionary"
+                dirChooser = true
+                installationPath = System.getenv("LOCALAPPDATA")
             }
 
             linux {
@@ -95,19 +102,4 @@ buildscript {
     dependencies {
         classpath("com.guardsquare:proguard-gradle:7.2.0")
     }
-}
-
-// Define task to obfuscate the JAR and output to <name>.min.jar
-
-tasks.register<proguard.gradle.ProGuardTask>("obfuscate") {
-    val packageUberJarForCurrentOS by tasks.getting
-    dependsOn(packageUberJarForCurrentOS)
-    val files = packageUberJarForCurrentOS.outputs.files
-    injars(files)
-    outjars(files.map { file -> File(file.parentFile, "${file.nameWithoutExtension}.min.jar") })
-
-    val library = if (System.getProperty("java.version").startsWith("1.")) "lib/rt.jar" else "jmods"
-    libraryjars("${System.getProperty("java.home")}/$library")
-
-    configuration("proguard-rules.pro")
 }

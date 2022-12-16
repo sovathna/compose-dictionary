@@ -22,6 +22,7 @@ import java.net.URI
 fun AboutPage() {
     Card(
         modifier = Modifier.fillMaxSize(),
+        elevation = 3.dp,
         shape = RoundedCornerShape(8.dp),
         content = {
             Column(

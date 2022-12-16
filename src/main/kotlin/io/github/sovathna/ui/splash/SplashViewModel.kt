@@ -31,7 +31,7 @@ class SplashViewModel(private val scope: CoroutineScope) : BaseViewModel<SplashS
         var downloadInputStream: InputStream? = null
         var zipInputStream: ZipInputStream? = null
         try {
-            if (repo.shouldDownloadData(Const.config.dataVersion)) {
+            if (repo.shouldDownloadData(Const.config.dataVersion) || !file.exists()) {
                 delay(250)
                 if (file.exists()) file.delete()
                 dbOutputStream = FileOutputStream(file)

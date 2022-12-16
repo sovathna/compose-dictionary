@@ -41,14 +41,14 @@ fun WordList(
         lazyListState.scrollToItem(0)
     }
 
-    Box(Modifier.width(200.dp).fillMaxHeight()) {
+    Box(Modifier.width(220.dp).fillMaxHeight()) {
         Column(Modifier.fillMaxSize()) {
             OutlinedTextField(
                 state.filter,
                 modifier = Modifier.fillMaxWidth(),
                 onValueChange = vm::setPreviewFilter,
-                label = { Text("ស្វែងរកពាក្យ", letterSpacing = 0.sp) },
-                singleLine = true,
+                label = { Text("ស្វែងរកពាក្យ", letterSpacing = 0.sp, maxLines = 1) },
+                maxLines = 1,
                 shape = RoundedCornerShape(8.dp),
                 leadingIcon = {
                     Icon(
