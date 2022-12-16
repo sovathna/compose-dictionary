@@ -12,12 +12,15 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import io.github.sovathna.AppText
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlin.coroutines.coroutineContext
 import kotlin.math.ceil
 
 @Composable
 fun SplashPage(
-    scope: CoroutineScope = rememberCoroutineScope(),
-    vm: SplashViewModel = remember { SplashViewModel(scope) },
+    scope: CoroutineScope = rememberCoroutineScope { Dispatchers.Main.immediate },
+    vm: SplashViewModel = remember { SplashViewModel() },
     onDone: () -> Unit
 ) {
     val state by vm.statesFlow.collectAsState(scope.coroutineContext)

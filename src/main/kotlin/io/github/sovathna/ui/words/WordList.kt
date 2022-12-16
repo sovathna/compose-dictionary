@@ -21,20 +21,26 @@ import androidx.compose.ui.unit.sp
 import io.github.sovathna.AppText
 import io.github.sovathna.model.WordsType
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.awt.Cursor
 
 @Composable
 fun WordList(
     type: WordsType,
-    scope: CoroutineScope = rememberCoroutineScope(),
-    vm: WordListViewModel = remember { WordListViewModel(scope) },
+    scope: CoroutineScope = rememberCoroutineScope { Dispatchers.Main.immediate },
+    viewModel: WordListViewModel = remember { WordListViewModel() },
     onWordClick: (Long) -> Unit,
 ) {
-    val state by vm.stateFlow.collectAsState(scope.coroutineContext)
+    val state by viewModel.stateFlow.collectAsState(scope.coroutineContext)
     val lazyListState = rememberLazyListState()
 
+    LaunchedEffect(true) {
+        viewModel.init()
+    }
+
     LaunchedEffect(type) {
-        vm.getWords(type, "")
+        viewModel.getWords(type, "")
     }
 
     LaunchedEffect(state.words.firstOrNull()) {
@@ -46,7 +52,7 @@ fun WordList(
             OutlinedTextField(
                 state.filter,
                 modifier = Modifier.fillMaxWidth(),
-                onValueChange = vm::setPreviewFilter,
+                onValueChange = { value -> scope.launch { viewModel.setPreviewFilter(value) } },
                 label = { Text("ស្វែងរកពាក្យ", letterSpacing = 0.sp, maxLines = 1) },
                 maxLines = 1,
                 shape = RoundedCornerShape(8.dp),
@@ -61,7 +67,7 @@ fun WordList(
                 trailingIcon = {
                     if (state.shouldShowClear) {
                         IconButton(
-                            onClick = { vm.setPreviewFilter("") },
+                            onClick = { scope.launch { viewModel.setPreviewFilter("") } },
                             content = {
                                 Icon(
                                     Icons.Rounded.Clear,
@@ -76,9 +82,10 @@ fun WordList(
             Spacer(Modifier.height(16.dp))
             LazyColumn(Modifier.fillMaxSize(), state = lazyListState) {
                 itemsIndexed(state.words, key = { _, word -> word.id }) { index, word ->
-                    if (index == state.words.size - 4) {
-                        LaunchedEffect(true) {
-                            vm.shouldLoadMore()
+                    if (index == state.words.size - 4 && state.shouldLoadMore) {
+                        scope.launch {
+                            println("should load more")
+                            viewModel.shouldLoadMore()
                         }
                     }
                     Card(

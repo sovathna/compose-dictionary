@@ -19,12 +19,14 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import io.github.sovathna.AppText
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 @Composable
 fun Definition(
     wordId: Long,
-    scope: CoroutineScope = rememberCoroutineScope(),
-    vm: DefinitionViewModel = remember { DefinitionViewModel(scope) }
+    scope: CoroutineScope = rememberCoroutineScope { Dispatchers.Main.immediate },
+    vm: DefinitionViewModel = remember { DefinitionViewModel() }
 ) {
     val state by vm.statesFlow.collectAsState(scope.coroutineContext)
 
@@ -52,7 +54,7 @@ fun Definition(
                             val res =
                                 if (state.isBookmark) "bookmark_black_24dp.svg" else "bookmark_border_black_24dp.svg"
                             IconButton(
-                                onClick = { vm.addOrDeleteBookmark(state.isBookmark) },
+                                onClick = { scope.launch { vm.addOrDeleteBookmark(state.isBookmark) } },
                                 content = {
                                     Icon(
                                         painter = painterResource(res),
@@ -92,7 +94,7 @@ fun Definition(
                             ),
                             onClick = { offset ->
                                 str.getStringAnnotations(tag = "word", offset, offset).firstOrNull()?.let {
-                                    vm.getDefinition(it.item.toLongOrNull() ?: 0L)
+                                    scope.launch { vm.getDefinition(it.item.toLongOrNull() ?: 0L) }
                                 }
                             }
                         )

@@ -4,7 +4,9 @@ import io.github.sovathna.Const
 import io.github.sovathna.domain.FileDownloadService
 import io.github.sovathna.domain.Repository
 import io.github.sovathna.ui.BaseViewModel
-import kotlinx.coroutines.*
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.ensureActive
+import kotlinx.coroutines.withContext
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import org.koin.core.qualifier.named
@@ -12,21 +14,20 @@ import java.io.File
 import java.io.FileOutputStream
 import java.io.InputStream
 import java.util.zip.ZipInputStream
+import kotlin.coroutines.CoroutineContext
 
-class SplashViewModel(private val scope: CoroutineScope) : BaseViewModel<SplashState>(SplashState()), KoinComponent {
+class SplashViewModel : BaseViewModel<SplashState>(SplashState()), KoinComponent {
 
-
+    private val ioDispatcher by inject<CoroutineContext>(qualifier = named("io_dispatcher"))
     private val file by inject<File>(qualifier = named("database_file"))
     private val repo by inject<Repository>()
     private val downloadService by inject<FileDownloadService>()
 
     private fun setProgress(progress: Float) {
-        scope.launch {
-            setState(current.copy(progress = progress))
-        }
+        setState(current.copy(progress = progress))
     }
 
-    suspend fun downloadAndUnzip() = withContext(Dispatchers.IO) {
+    suspend fun downloadAndUnzip() = withContext(ioDispatcher) {
         var dbOutputStream: FileOutputStream? = null
         var downloadInputStream: InputStream? = null
         var zipInputStream: ZipInputStream? = null
@@ -61,9 +62,10 @@ class SplashViewModel(private val scope: CoroutineScope) : BaseViewModel<SplashS
             }
             setProgress(1f)
             delay(250)
-            scope.launch {
-                setState(current.copy(shouldRedirect = true))
-            }
+            setState(current.copy(shouldRedirect = true))
+        } catch (e: Exception) {
+            e.printStackTrace()
+            setState(current.copy(throwable = e))
         } finally {
             zipInputStream?.closeEntry()
             zipInputStream?.close()

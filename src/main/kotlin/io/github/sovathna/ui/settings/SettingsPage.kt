@@ -13,15 +13,21 @@ import androidx.compose.ui.unit.sp
 import io.github.sovathna.AppText
 import io.github.sovathna.model.ThemeType
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 
 @Composable
 fun SettingsPage(
-    scope: CoroutineScope = rememberCoroutineScope(),
-    vm: SettingsViewModel = remember { SettingsViewModel(scope) },
+    scope: CoroutineScope = rememberCoroutineScope { Dispatchers.Main.immediate },
+    viewModel: SettingsViewModel = remember { SettingsViewModel() },
     onThemeChanged: (ThemeType) -> Unit
 ) {
-    val state by vm.statesFlow.collectAsState(scope.coroutineContext)
+    val state by viewModel.statesFlow.collectAsState(scope.coroutineContext)
+
+    LaunchedEffect(true) {
+        viewModel.init()
+    }
 
     Card(
         modifier = Modifier.fillMaxSize(),
@@ -33,8 +39,10 @@ fun SettingsPage(
                 content = {
 
                     fun setThemeType(themeType: ThemeType) {
-                        vm.setThemeType(themeType)
-                        onThemeChanged(themeType)
+                        scope.launch {
+                            viewModel.setThemeType(themeType)
+                            onThemeChanged(themeType)
+                        }
                     }
 
                     AppText(
@@ -69,10 +77,10 @@ fun SettingsPage(
                     Slider(
                         modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
                         value = state.fontSize,
-                        onValueChange = { vm.setPreviewFontSize(it) },
+                        onValueChange = { viewModel.setPreviewFontSize(it) },
                         valueRange = 16f..50f,
                         steps = 50 - 16,
-                        onValueChangeFinished = { vm.setFontSize(state.fontSize) }
+                        onValueChangeFinished = { scope.launch { viewModel.setFontSize(state.fontSize) } }
                     )
                     AppText(
                         modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),

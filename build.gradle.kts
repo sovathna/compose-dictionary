@@ -1,4 +1,3 @@
-import org.jetbrains.compose.compose
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
@@ -30,7 +29,7 @@ dependencies {
 //                implementation("androidx.paging:paging-compose:1.0.0-alpha15")
     implementation("com.squareup.sqldelight:sqlite-driver:1.5.4")
 //                implementation ("com.squareup.sqldelight:coroutines-extensions-jvm:1.5.3")
-    implementation("io.insert-koin:koin-core:3.2.2")
+    implementation("io.insert-koin:koin-core:3.3.0")
 
 //    implementation ("com.squareup.retrofit2:retrofit:2.9.0")
 //    implementation("com.squareup.okhttp3:logging-interceptor:4.10.0")
@@ -38,18 +37,23 @@ dependencies {
     implementation("com.squareup.okhttp3:okhttp")
     implementation("com.squareup.okhttp3:logging-interceptor")
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
+
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-swing:1.6.4")
 }
 
 
 compose.desktop {
     application {
 
-        buildTypes.release.proguard {
-            configurationFiles.from(project.file("proguard-rules.pro"))
+        javaHome = System.getenv("JDK_17")
+        mainClass = "io.github.sovathna.MainKt"
+
+        buildTypes.release {
+            proguard {
+                configurationFiles.from(project.file("proguard-rules.pro"))
+            }
         }
 
-        javaHome = System.getenv("JDK_18")
-        mainClass = "io.github.sovathna.MainKt"
         nativeDistributions {
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Rpm, TargetFormat.Deb)
             packageName = "io.github.sovathna.KhmerDictionary"

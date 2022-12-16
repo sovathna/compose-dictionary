@@ -8,17 +8,19 @@ import io.github.sovathna.domain.wordsdb.WordsDatabase
 import io.github.sovathna.model.ThemeType
 import io.github.sovathna.model.WordUi
 import io.github.sovathna.model.WordsType
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
+import org.koin.core.qualifier.named
+import kotlin.coroutines.CoroutineContext
 
 class RepositoryImpl : Repository, KoinComponent {
     private val db by inject<WordsDatabase>()
     private val localDb by inject<LocalDatabase>()
     private val settings by inject<SettingsStore>()
+    private val ioDispatcher by inject<CoroutineContext>(qualifier = named("io_dispatcher"))
     override suspend fun getWords(type: WordsType, filter: String, page: Int, pageSize: Int): List<WordUi> =
-        withContext(Dispatchers.IO) {
+        withContext(ioDispatcher) {
             when (type) {
                 WordsType.HISTORY -> {
                     localDb.historiesDaoQueries
@@ -54,30 +56,32 @@ class RepositoryImpl : Repository, KoinComponent {
         }
 
     override suspend fun getDefinition(wordId: Long): SelectDefinition =
-        withContext(Dispatchers.IO) {
+        withContext(ioDispatcher) {
             db.wordsDaoQueries
                 .selectDefinition(wordId)
                 .executeAsOne()
         }
 
-    override suspend fun addHistory(wordId: Long, word: String) = withContext(Dispatchers.IO) {
-        with(localDb.historiesDaoQueries) {
-            transaction {
-                val old = selectHistory(wordId).executeAsOneOrNull()
-                if (old != null) {
-                    deleteHistory(old)
+    override suspend fun addHistory(wordId: Long, word: String) =
+        withContext(ioDispatcher) {
+            with(localDb.historiesDaoQueries) {
+                transaction {
+                    val old = selectHistory(wordId).executeAsOneOrNull()
+                    if (old != null) {
+                        deleteHistory(old)
+                    }
+                    insertHistory(wordId, word)
                 }
-                insertHistory(wordId, word)
             }
         }
-    }
 
-    override suspend fun isBookmark(wordId: Long) = withContext(Dispatchers.IO) {
-        localDb.bookmarksDaoQueries.selectBookmark(wordId).executeAsOneOrNull() != null
-    }
+    override suspend fun isBookmark(wordId: Long) =
+        withContext(ioDispatcher) {
+            localDb.bookmarksDaoQueries.selectBookmark(wordId).executeAsOneOrNull() != null
+        }
 
     override suspend fun addOrDeleteBookmark(isBookmark: Boolean, wordId: Long, word: String) =
-        withContext(Dispatchers.IO) {
+        withContext(ioDispatcher) {
             with(localDb.bookmarksDaoQueries) {
                 if (isBookmark) {
                     deleteBookmark(wordId)
@@ -89,17 +93,24 @@ class RepositoryImpl : Repository, KoinComponent {
             }
         }
 
-    override suspend fun setThemeType(themeType: ThemeType) = settings.setThemeType(themeType)
+    override suspend fun setThemeType(themeType: ThemeType) =
+        withContext(ioDispatcher) { settings.setThemeType(themeType) }
 
-    override suspend fun getThemeType() = settings.getThemeType()
+    override suspend fun getThemeType() =
+        withContext(ioDispatcher) { settings.getThemeType() }
 
-    override suspend fun setFontSize(size: Float) = settings.setDefinitionFontSize(size)
+    override suspend fun setFontSize(size: Float) =
+        withContext(ioDispatcher) { settings.setDefinitionFontSize(size) }
 
-    override suspend fun getFontSize() = settings.getDefinitionFontSize()
+    override suspend fun getFontSize() =
+        withContext(ioDispatcher) { settings.getDefinitionFontSize() }
 
-    override suspend fun getDataVersion() = settings.getDataVersion()
+    override suspend fun getDataVersion() =
+        withContext(ioDispatcher) { settings.getDataVersion() }
 
-    override suspend fun setDataVersion(version: Int) = settings.setDataVersion(version)
+    override suspend fun setDataVersion(version: Int) =
+        withContext(ioDispatcher) { settings.setDataVersion(version) }
 
-    override suspend fun shouldDownloadData(newVersion: Int) = getDataVersion() < newVersion
+    override suspend fun shouldDownloadData(newVersion: Int) =
+        withContext(ioDispatcher) { getDataVersion() < newVersion }
 }
